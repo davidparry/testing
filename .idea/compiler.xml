@@ -19,6 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="example_main" target="1.5" />
+      <module name="example_test" target="1.5" />
       <module name="junit_main" target="1.5" />
       <module name="junit_test" target="1.5" />
     </bytecodeTargetLevel>
