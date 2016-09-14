@@ -1,6 +1,6 @@
 package com.davidparry.luck;
 
-import com.davidparry.service.LuckySauceImpl;
+import com.davidparry.service.LuckySauce;
 
 import java.util.Random;
 
@@ -10,15 +10,11 @@ import java.util.Random;
  */
 public class LuckyNumberPicker {
 
-    private int[] mNumbers;
+    private LuckySauce mLuckySauce;
 
     /**
-     *
-     * Lets take a look:
-     * Constructor = bad can not test
-     * IoC !
-     * Constructor needs injected discuss
-     * LuckySauce and Random needs help its a concrete need to wrap this
+     * Ok the Constructor has been changed
+     * Still need more to test since Random is a concrete class arghhh
      *
      *
      *
@@ -34,13 +30,25 @@ public class LuckyNumberPicker {
      *
      * if value is over 70 or less than 5 than ask LuckySauce again
      *
-     * @param amount - total amount of numbers to pick
+     * @param luckySauce - IoC injection of our LuckySauce
+     *
+     * Now we can inject the concrete implementation or a Mock of LuckySauce interface as long as we follow the contract
      */
-    public LuckyNumberPicker(int amount) {
-        mNumbers = new int[amount];
+    public LuckyNumberPicker(LuckySauce luckySauce) {
+        mLuckySauce = luckySauce;
+
+    }
+
+    /**
+     * Not the best wa a big method but we are starting
+     * @param amount
+     * @return
+     */
+    public int[] getNumbers(int amount) {
+        int[] numbers = new int[amount];
         for (int i = 0; i < amount; i++) {
-            LuckySauceImpl secretSauce = new LuckySauceImpl();
-            Random random = new Random(secretSauce.getLuckySauce());
+            // this is still a problem
+            Random random = new Random(mLuckySauce.getLuckySauce());
             int suggested = random.nextInt(70);
 
             if (suggested > 30 && System.nanoTime() % 5 == 0) {
@@ -57,23 +65,11 @@ public class LuckyNumberPicker {
                 suggested = suggested + 23;
             }
             if (suggested < 71 && suggested > 5) {
-                mNumbers[i] = suggested;
+                numbers[i] = suggested;
             } else {
                 i--;
             }
         }
-
-    }
-
-    public static void main(String[] args) {
-        LuckyNumberPicker luckyNumberPicker = new LuckyNumberPicker(10);
-        int[] numbers = luckyNumberPicker.getNumbers();
-        for (int i = 0; i < numbers.length; i++) {
-            System.out.println(numbers[i]);
-        }
-    }
-
-    public int[] getNumbers() {
-        return mNumbers;
+        return numbers;
     }
 }
