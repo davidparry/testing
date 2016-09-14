@@ -1,8 +1,6 @@
 package com.davidparry.luck;
 
-import com.davidparry.service.LuckySauce;
-
-import java.util.Random;
+import com.davidparry.service.RandomWrapper;
 
 /**
  *
@@ -10,7 +8,7 @@ import java.util.Random;
  */
 public class LuckyNumberPicker {
 
-    private LuckySauce mLuckySauce;
+    private RandomWrapper mRandomWrapper;
 
     /**
      * Ok the Constructor has been changed
@@ -28,14 +26,16 @@ public class LuckyNumberPicker {
      * 5. current nano time is divisible by 47 subtract 1 from suggestion use its absolute value if less than 0
      * 6. current nano time is divisible by 53 add 23 from suggestion
      *
-     * if value is over 70 or less than 5 than ask LuckySauce again
+     * if value is over 70 or less than 5 than ask our Random again
      *
-     * @param luckySauce - IoC injection of our LuckySauce
+     * @param randomWrapper - IoC injection of our RandomWrapper now we do not have a reference or exposure to Lucky
      *
-     * Now we can inject the concrete implementation or a Mock of LuckySauce interface as long as we follow the contract
+     * Now after another Design round we see we created a RandomWrapper and can now limit our exposure to only the
+     * wrapper in this class no reference to LuckySauce yippie another point to ICD (c) David Parry :-)
+     *
      */
-    public LuckyNumberPicker(LuckySauce luckySauce) {
-        mLuckySauce = luckySauce;
+    public LuckyNumberPicker(RandomWrapper randomWrapper) {
+        mRandomWrapper = randomWrapper;
 
     }
 
@@ -47,9 +47,8 @@ public class LuckyNumberPicker {
     public int[] getNumbers(int amount) {
         int[] numbers = new int[amount];
         for (int i = 0; i < amount; i++) {
-            // this is still a problem
-            Random random = new Random(mLuckySauce.getLuckySauce());
-            int suggested = random.nextInt(70);
+
+            int suggested = mRandomWrapper.nextInt(70);
 
             if (suggested > 30 && System.nanoTime() % 5 == 0) {
                 suggested = suggested + 10;
