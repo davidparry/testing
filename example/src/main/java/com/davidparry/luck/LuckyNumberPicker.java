@@ -1,10 +1,11 @@
 package com.davidparry.luck;
 
-import com.davidparry.service.LuckySauce;
+import com.davidparry.service.LuckySauceImpl;
 
 import java.util.Random;
 
 /**
+ *
  * Created by david on 9/12/16.
  */
 public class LuckyNumberPicker {
@@ -12,6 +13,16 @@ public class LuckyNumberPicker {
     private int[] mNumbers;
 
     /**
+     *
+     * Lets take a look:
+     * Constructor = bad can not test
+     * IoC !
+     * Constructor needs injected discuss
+     * LuckySauce and Random needs help its a concrete need to wrap this
+     *
+     *
+     *
+     *
      * Needs to pick as many as numbers that the amount requests
      * criteria on the suggested number which is seeded by the LuckSauce
      * 1. greater than 30 and current nano time is divisible by 5 add 10 to suggestion
@@ -28,7 +39,7 @@ public class LuckyNumberPicker {
     public LuckyNumberPicker(int amount) {
         mNumbers = new int[amount];
         for (int i = 0; i < amount; i++) {
-            LuckySauce secretSauce = new LuckySauce();
+            LuckySauceImpl secretSauce = new LuckySauceImpl();
             Random random = new Random(secretSauce.getLuckySauce());
             int suggested = random.nextInt(70);
 
