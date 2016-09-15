@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Now we are doing 1 assertion per test
+ * Completed all cases tested and edge cases
  * Created by david on 9/13/16.
  */
 public class LuckyNumberPickerTest {
@@ -23,10 +23,6 @@ public class LuckyNumberPickerTest {
 
     }
 
-    /**
-     * checking the size not if its null should always be an object if not
-     * an exception will happen and we are fine.
-     */
     @Test
     public void getNumbersCheckValidSize() throws Exception{
         RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
@@ -47,26 +43,7 @@ public class LuckyNumberPickerTest {
         Assert.assertEquals("10 passed but the return amount is wrong",10,numbers.length);
     }
 
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void getNumbersReturnLessthan5Test() throws Exception {
-        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
-        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(5,6);
-        // look we are actually injecting the same wrapped object to test out the random behavior too
-        Mockito.when(randomWrapper.getNanoTime()).thenReturn(System.nanoTime());
-        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
-        int[] numbers = lnp.getNumbers(1);
-        Assert.assertEquals("The value should always be 6 something changed ",6,numbers[0]);
-    }
 
-
-    /**
-     * Lets start to catch another scenario that needs to be tested
-     * 1.  greater than 30 and current nano time is divisible by 5 add 10 to suggestion
-     * @throws Exception
-     */
     @Test
     public void getNumbersGreaterThan30NanoSeedDividedBy5() throws Exception {
         RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
@@ -77,11 +54,6 @@ public class LuckyNumberPickerTest {
         Assert.assertEquals("We should have 31 + 10 but instead its ?",41,numbers[0]);
     }
 
-    /**
-     * Lets start to catch another scenario that needs to be tested
-     * 2. greater than 30 and current nano time is divisible by 6 add 6 to suggestion
-     * @throws Exception
-     */
     @Test
     public void getNumbersGreaterThan30NanoSeedDividedBy6() throws Exception {
         RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
@@ -92,5 +64,65 @@ public class LuckyNumberPickerTest {
         Assert.assertEquals("We should have 40 + 6 in all 23 places checking the 6 position which failed",46,numbers[6]);
     }
 
+    @Test
+    public void getNumbersLessThan30NanoSeedDividedBy8() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(29);
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(8L);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(100);
+        Assert.assertEquals("should have 34 in all 100 places checking the 89 position which failed",34,numbers[89]);
+    }
+
+    @Test
+    public void getNumbersLessThan30NanoSeedDividedBy43() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(25);
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(43L);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(1);
+        Assert.assertEquals("subtraction piece is not working",13,numbers[0]);
+    }
+
+    @Test
+    public void getNumbersNanoSeedDividedBy47() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        // can test the logic in 2 places to see the looping when less than 5
+        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(4,45);
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(47L);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(1);
+        Assert.assertEquals("subtraction piece is not working with a looping section",44,numbers[0]);
+    }
+
+    @Test
+    public void getNumbersNanoSeedDividedBy53() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(23);
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(53L);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(1);
+        Assert.assertEquals("subtraction piece is not working no loop",46,numbers[0]);
+    }
+
+    @Test
+    public void getNumbers0AskedBack() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(0);
+        Assert.assertEquals("should be no values",numbers.length,0);
+    }
+
+    @Test
+    public void getNumbersNegativeAskedBack() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        try {
+            int[] numbers = lnp.getNumbers(-1);
+            Assert.assertTrue("should not reach here should throw an exception",false);
+        } catch(NegativeArraySizeException nase) {
+            Assert.assertTrue(true);
+        }
+    }
 
 }
