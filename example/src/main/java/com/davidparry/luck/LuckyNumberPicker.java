@@ -33,6 +33,9 @@ public class LuckyNumberPicker {
      * Now after another Design round we see we created a RandomWrapper and can now limit our exposure to only the
      * wrapper in this class no reference to LuckySauce yippie another point to ICD (c) David Parry :-)
      *
+     *
+     * We still had the dependency on the System.nanoTime for simplicity and time we added it to the RandomWrapper
+     *
      */
     public LuckyNumberPicker(RandomWrapper randomWrapper) {
         mRandomWrapper = randomWrapper;
@@ -47,20 +50,20 @@ public class LuckyNumberPicker {
     public int[] getNumbers(int amount) {
         int[] numbers = new int[amount];
         for (int i = 0; i < amount; i++) {
-
             int suggested = mRandomWrapper.nextInt(70);
+            long randomSeed = mRandomWrapper.getNanoTime();
 
-            if (suggested > 30 && System.nanoTime() % 5 == 0) {
+            if (suggested > 30 && randomSeed % 5 == 0) {
                 suggested = suggested + 10;
-            } else if (suggested > 30 && System.nanoTime() % 6 == 0) {
+            } else if (suggested > 30 && randomSeed % 6 == 0) {
                 suggested = suggested + 6;
-            } else if (suggested < 30 && System.nanoTime() % 8 == 0) {
+            } else if (suggested < 30 && randomSeed % 8 == 0) {
                 suggested = suggested + 5;
-            } else if (suggested < 30 && System.nanoTime() % 43 == 0) {
+            } else if (suggested < 30 && randomSeed % 43 == 0) {
                 suggested = Math.abs(suggested - 12);
-            } else if (System.nanoTime() % 47 == 0) {
+            } else if (randomSeed % 47 == 0) {
                 suggested = Math.abs(suggested - 1);
-            } else if (System.nanoTime() % 53 == 0) {
+            } else if (randomSeed % 53 == 0) {
                 suggested = suggested + 23;
             }
             if (suggested < 71 && suggested > 5) {

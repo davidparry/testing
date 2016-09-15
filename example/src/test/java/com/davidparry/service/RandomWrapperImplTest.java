@@ -45,4 +45,10 @@ public class RandomWrapperImplTest {
         Assert.assertNotNull(impl.nextLong());
     }
 
+    @Test
+    public void getNanoTime() throws Exception {
+        RandomWrapperImpl impl = new RandomWrapperImpl(122L);
+        Assert.assertNotNull(impl.getNanoTime());
+    }
+
 }

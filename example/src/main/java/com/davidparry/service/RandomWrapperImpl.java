@@ -22,4 +22,6 @@ public class RandomWrapperImpl implements RandomWrapper {
     public long nextLong(){
         return new Random(mLuckyValue).nextLong();
     }
+
+    public long getNanoTime() {return System.nanoTime();}
 }

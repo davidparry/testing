@@ -7,4 +7,6 @@ public interface RandomWrapper {
     int nextInt(int bounds);
 
     long nextLong();
+
+    long getNanoTime();
 }
