@@ -54,8 +54,7 @@ public class LuckyNumberPickerTest {
     public void getNumbersReturnLessthan5Test() throws Exception {
         RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
         Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(5,6);
-        // look we are actually injecting the same wrapped object to test out the random behavior too
-        Mockito.when(randomWrapper.getNanoTime()).thenReturn(System.nanoTime());
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(19797876298390L);
         LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
         int[] numbers = lnp.getNumbers(1);
         Assert.assertEquals("The value should always be 6 something changed ",6,numbers[0]);
