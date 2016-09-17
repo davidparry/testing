@@ -2,11 +2,25 @@ group 'com.davidparry.test'
 version '1.0-SNAPSHOT'
 apply plugin: "groovy"
 apply plugin: 'java'
+apply plugin: "jacoco"
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+check.dependsOn 'jacocoTestReport'
 
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "$buildDir/jacocoHtml"
+    }
 }
 
 dependencies {
@@ -21,4 +35,7 @@ dependencies {
     testRuntime "cglib:cglib-nodep:3.1"          // allows mocking of classes (in addition to interfaces)
     testRuntime "org.objenesis:objenesis:2.1"    // allows mocking of classes without default constructor (together with CGLIB)
 
+    testRuntime(
+            'com.athaydes:spock-reports:1.2.7'
+    )
 }
