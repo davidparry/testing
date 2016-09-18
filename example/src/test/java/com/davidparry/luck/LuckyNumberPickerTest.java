@@ -96,6 +96,18 @@ public class LuckyNumberPickerTest {
     }
 
     @Test
+    public void getNumbersNanoSeedGreaterThan71DividedByNoMatch() throws Exception {
+        RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
+        // now we are testing that greater than 71
+        Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(73,45);
+        Mockito.when(randomWrapper.getNanoTime()).thenReturn(1L);
+        LuckyNumberPicker lnp = new LuckyNumberPicker(randomWrapper);
+        int[] numbers = lnp.getNumbers(1);
+        Assert.assertEquals("subtraction piece is not working with a looping section",45,numbers[0]);
+    }
+
+
+    @Test
     public void getNumbersNanoSeedDividedBy53() throws Exception {
         RandomWrapper randomWrapper = Mockito.mock(RandomWrapper.class);
         Mockito.when(randomWrapper.nextInt(Mockito.anyInt())).thenReturn(23);
