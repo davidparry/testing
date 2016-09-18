@@ -38,7 +38,7 @@ public class LuckyNumberPickerTest {
         // assert the value returns as the suggested value but how in this case
         // bad thing here we could be lucky and it actually returns 30
         // time for Interactive Code Design! (c) David Parry
-        Assert.assertEquals("how can we start to get test this case ",30,numbers[0]);
+        Assert.assertEquals("how can we start to test all these possibilities ",30,numbers[0]);
     }
 
 }
