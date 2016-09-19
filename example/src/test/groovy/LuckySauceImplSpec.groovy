@@ -1,7 +1,7 @@
 import com.davidparry.service.LuckySauceImpl
 import com.davidparry.service.RandomWrapper
 
-class LuckySauceImplTest extends spock.lang.Specification {
+class LuckySauceImplSpec extends spock.lang.Specification {
 
 
     def "call getLucky Sauce test"() {
